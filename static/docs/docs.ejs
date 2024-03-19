@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>OAuth in Action: OAuth Client</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<style>
+	body {
+	  padding-top: 60px;
+	}
+	.navbar-inverse {
+		background-color: #223;
+	}
+	</style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/console">OAuth <span class="label label-primary">Console</span></a>
+        </div>
+				<div class="navbar-item">
+					<a class="navbar-brand" href="/console/docs">DOCS</a>
+				</div>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="row">
+		  
+		  <div class="col">
+			  <div class="well">
+				  <h3>Implicit Grant</h3>
+				  <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Parameter</th>
+                <th scope="col">Type</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>client_id</td>
+                <td>String</td>
+                <td>등록한 Client ID입니다.</td>
+              </tr>
+              <tr>
+                <td>redirect_url</td>
+                <td>URL</td>
+                <td>등록한 Redirect URL입니다. access token이 입력한 URL로 전송됩니다.</td>
+              </tr>
+              <tr>
+                <td>response_type</td>
+                <td>String</td>
+                <td>인증 타입을 지정합니다. 이 값은 "token"만 가능합니다.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="border: 1px solid brown"><h4>전송 URL 예시 </h4> http://localhost:9000/oauth/v1/authorize<br>?client_id=test_id<br>&redirect_url=http://localhost:3000<br>&response_type=token</div><br>
+          <h4>로그인 하고 허용할 권한 선택 후 허용 버튼을 클릭하면 OAuth 서버가 등록한 Redirect URL로 access token을 JSON형식으로 전송합니다.</h4>
+          <div style="border: 1px solid brown"><h4>JSON 예시</h4>{<br>&#160;&#160;"status": 200<br>&#160;&#160;"data": {<br>&#160;&#160;&#160;&#160;"access_token": "test_token",<br>&#160;&#160;&#160;&#160;"expire_in": "15768000",<br>&#160;&#160;&#160;&#160;"scopes": "test_scope",<br>&#160;&#160;&#160;&#160;"token_type": "bearer"<br>&#160;&#160;}<br>}</div>
+        </div>
+		  </div>
+		  <div class="col">
+			  <div class="well">
+				  <h3>Authorization Code Grant</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Parameter</th>
+                <th scope="col">Type</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>client_id</td>
+                <td>String</td>
+                <td>등록한 Client ID입니다.</td>
+              </tr>
+              <tr>
+                <td>redirect_url</td>
+                <td>URL</td>
+                <td>등록한 Redirect URL입니다. authorization code가 입력한 URL로 전송됩니다.</td>
+              </tr>
+              <tr>
+                <td>response_type</td>
+                <td>String</td>
+                <td>인증 타입을 지정합니다. 이 값은 "code"만 가능합니다.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="border: 1px solid brown"><h4>전송 URL 예시 </h4> http://localhost:9000/oauth/v1/authorize<br>?client_id=test_id<br>&redirect_url=http://localhost:3000<br>&response_type=code</div><br>
+          <h4>로그인 하고 허용할 권한 선택 후 허용 버튼을 클릭하면 OAuth 서버가 등록한 Redirect URL로 authorization code를 JSON형식으로 전송합니다.</h4>
+          <div style="border: 1px solid brown"><h4>JSON 예시</h4>{<br>&#160;&#160;"status": 200<br>&#160;&#160;"data": {<br>&#160;&#160;&#160;&#160;"client_id": "test_id",<br>&#160;&#160;&#160;&#160;"code": "test_code",<br>&#160;&#160;&#160;&#160;"grant_type": "authorization_code",<br>&#160;&#160;&#160;&#160;"redirect_url": "test_url"<br>&#160;&#160;}<br>}</div>
+			  </div>
+		  </div>
+		  <div class="col">
+			  <div class="well">
+				  <h3>Client credentials Grant</h3>
+				  <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Parameter</th>
+                <th scope="col">Type</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>client_id</td>
+                <td>String</td>
+                <td>등록한 Client ID입니다.</td>
+              </tr>
+              <tr>
+                <td>client_secret</td>
+                <td>String</td>
+                <td>발급받은 Client Secret입니다.</td>
+              </tr>
+              <tr>
+                <td>grant_type</td>
+                <td>String</td>
+                <td>이 값은 "client_credentials"만 가능합니다.</td>
+              </tr>
+              <tr>
+                <td>scope</td>
+                <td>String</td>
+                <td>Space로 구분된 권한 목록입니다.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="border: 1px solid brown"><h4>전송 URL 예시 </h4> http://localhost:9000/oauth/v1/token에 POST로 JSON을 전송합니다.<br>client_id=test_id<br>&client_secret=test_secret<br>&grant_type=client_credentials<br>&scope=test_scope</div><br>
+          <h4>Client credentials 방식으로 요청시 OAuth서버가 access token을 JSON형식으로 전송합니다.</h4>
+          <div style="border: 1px solid brown"><h4>JSON 예시</h4>{<br>&#160;&#160;"access_token": "test_token",<br>&#160;&#160;"expire_in": "15768000",<br>&#160;&#160;"token_type": "bearer"<br>}</div>
+			  </div>
+		  </div>
+      <div class="col">
+			  <div class="well">
+				  <h3>Validating Tokens</h3>
+				  <div style="border: 1px solid brown">헤더에 "Authorization": "bearer {access_token}"형식으로 access token을 담아 http://localhost:9000/oauth/v1/validate에 GET방식으로 전송하여 access token의 유효성을 검사할 수 있습니다.</div>
+          <div style="border: 1px solid brown">유효한 토큰일 경우 다음과 같은 JSON을 수신합니다.<br>{<br>&#160;&#160;"client_id": "test_id",<br>&#160;&#160;"scopes": "test_scope",<br>&#160;&#160;"expire_in": 5000<br>}</div>
+          <div style="border: 1px solid brown">유효한 토큰이 아니라면 401 상태코드와 함께 다음과 같은 JSON을 수신합니다.<br>{<br>&#160;&#160;"status": 401,<br>&#160;&#160;"message": "Invalid access token"<br>}</div>
+			  </div>
+		  </div>
+      <div class="col">
+			  <div class="well">
+				  <h3>Refreshing Tokens</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Parameter</th>
+                <th scope="col">Type</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>client_id</td>
+                <td>String</td>
+                <td>등록한 Client ID입니다.</td>
+              </tr>
+              <tr>
+                <td>token</td>
+                <td>String</td>
+                <td>발급받은 Access Token입니다.</td>
+              </tr>
+            </tbody>
+          </table>
+				  <div style="border: 1px solid brown">body에 "token"="{access_token}"&"client_id"="test_id"형식으로 access token과 Client ID을 담아 http://localhost:9000/oauth/v1/revoke에 POST방식으로 전송하여 access token을 폐기할 수 있습니다.</div>
+          <div style="border: 1px solid brown">성공할 경우 200 상태코드를 수신합니다.</div>
+          <div style="border: 1px solid brown">실패할 경우 다음과 같은 JSON을 수신합니다.<br>{<br>&#160;&#160;"status": "401",<br>&#160;&#160;"message": "Invalid token"<br>},<br>{<br>&#160;&#160;"status": 406,<br>&#160;&#160;"message": "Invalid client"<br>}</div>
+			  </div>
+		  </div>
+		  
+      </div>
+
+    </div><!-- /.container -->
+
+	
+	
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  </body>
+</html>
